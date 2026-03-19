@@ -1,4 +1,3 @@
-# Fintech-application
 # 💰 SmartFinance Dashboard
 
 ## Overview
@@ -26,6 +25,7 @@ This project simulates a real-world digital banking experience, focusing on usab
 * Tailwind CSS (Styling)
 * Recharts (Data Visualization)
 * JavaScript (Logic & State Management)
+* Vite (Build Tool)
 
 ---
 
@@ -63,4 +63,28 @@ This project reflects my interest in financial technology and building modern, u
 
 ## 🔗 Live Demo
 
-*(Add link once deployed)*
+https://bparker81597.github.io/Fintech-application/
+
+---
+
+## 🏃 Getting Started
+
+### Install dependencies
+```bash
+npm install
+```
+
+### Run development server
+```bash
+npm run dev
+```
+
+### Build for production
+```bash
+npm run build
+```
+
+### Preview production build
+```bash
+npm run preview
+```
