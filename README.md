@@ -24,7 +24,7 @@ This project simulates a real-world digital banking experience, focusing on usab
 * React (Frontend)
 * Tailwind CSS (Styling)
 * Recharts (Data Visualization)
-* JavaScript (Logic & State Management)
+* TypeScript (Logic & State Management)
 * Vite (Build Tool)
 
 ---
@@ -51,7 +51,15 @@ This project simulates a real-world digital banking experience, focusing on usab
 
 ## 📸 Screenshots
 
-*(Add screenshots here after building UI — this increases recruiter interest significantly)*
+
+### 💻 Dashboard Overview
+
+![SmartFinance Dashboard](./screenshots/dashboard.png)
+
+### 📊 Spending Analytics & Transaction Management
+
+A clean, user-focused interface that highlights financial insights, transaction tracking, and budgeting tools in a modern fintech layout.
+
 
 ---
 
@@ -63,8 +71,7 @@ This project reflects my interest in financial technology and building modern, u
 
 ## 🔗 Live Demo
 
-https://bparker81597.github.io/Fintech-application/
-
+(https://bparker81597.github.io/smart-finance-dashboard/)
 ---
 
 ## 🏃 Getting Started
