@@ -51,8 +51,6 @@ This project simulates a real-world digital banking experience, focusing on usab
 
 ## 📸 Screenshots
 
-*(Add screenshots here after building UI — this increases recruiter interest significantly)*
-
 ---
 
 ## 💼 Why This Project Matters
@@ -63,4 +61,4 @@ This project reflects my interest in financial technology and building modern, u
 
 ## 🔗 Live Demo
 
-*(Add link once deployed)*
+
