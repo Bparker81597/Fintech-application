@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDownRight, ArrowUpRight, PiggyBank, Wallet, TrendingUp } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, PiggyBank, TrendingUp, Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
@@ -12,9 +12,12 @@ import { InsightsGrid } from "../components/insights/InsightsGrid";
 import { useTransactions } from "../hooks/useTransactions";
 import { formatCurrency } from "../utils/currency";
 
-export default function DashboardPage() {
-  const [search, setSearch] = useState("");
-  const { filteredTransactions, totals, addTransaction } = useTransactions(search);
+interface DashboardPageProps {
+  userId: string;
+}
+
+export default function DashboardPage({ userId }: DashboardPageProps) {
+  const { search, setSearch, filteredTransactions, totals, addTransaction, isLoading, error } = useTransactions(userId);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -33,6 +36,8 @@ export default function DashboardPage() {
           <AddTransactionCard onAddTransaction={addTransaction} />
         </section>
 
+        {error ? <p className="text-sm text-red-500 mb-4">{error}</p> : null}
+
         <Tabs defaultValue="transactions" className="space-y-6">
           <TabsList className="rounded-2xl bg-slate-200/70">
             <TabsTrigger value="transactions" className="rounded-2xl">Transactions</TabsTrigger>
@@ -41,7 +46,7 @@ export default function DashboardPage() {
           </TabsList>
 
           <TabsContent value="transactions">
-            <TransactionsList transactions={filteredTransactions} />
+            {isLoading ? <p className="text-sm text-slate-500">Loading transactions...</p> : <TransactionsList transactions={filteredTransactions} />}
           </TabsContent>
 
           <TabsContent value="budgets">
@@ -56,30 +61,27 @@ export default function DashboardPage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
           <Card className="rounded-2xl border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" /> Engineering Notes
-              </CardTitle>
+              <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5" /> Engineering Notes</CardTitle>
               <CardDescription>Use these points when explaining the project.</CardDescription>
             </CardHeader>
             <CardContent className="text-sm text-slate-600 space-y-3 leading-6">
-              <p>• The transactions feature is backed by a dedicated service and custom hook.</p>
-              <p>• Local storage persistence simulates real application state retention.</p>
-              <p>• The structure is intentionally prepared for API or Firebase integration.</p>
-              <p>• UI rendering is separated from data logic to keep the app maintainable.</p>
+              <p>• Firebase Authentication protects access to the dashboard.</p>
+              <p>• Firestore stores transactions by user in a secure collection.</p>
+              <p>• Service and hook layers separate data logic from presentation.</p>
+              <p>• The app now reflects a realistic production architecture.</p>
             </CardContent>
           </Card>
 
           <Card className="rounded-2xl border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle>Next Backend Steps</CardTitle>
-              <CardDescription>Best upgrades for a stronger engineering story.</CardDescription>
+              <CardTitle>Backend Architecture</CardTitle>
+              <CardDescription>Firebase integration details.</CardDescription>
             </CardHeader>
             <CardContent className="text-sm text-slate-600 space-y-3 leading-6">
-              <p>1. Add Firebase Authentication</p>
-              <p>2. Move transactions from local storage to Firestore</p>
-              <p>3. Add route protection and user-based data isolation</p>
-              <p>4. Add loading, empty, and error states</p>
-              <p>5. Deploy to Vercel and link it in the README</p>
+              <p>1. Auth: Email/Password authentication with Firebase Auth</p>
+              <p>2. Firestore: users/{'{userId}'}/transactions subcollection</p>
+              <p>3. Security: User data isolated by UID</p>
+              <p>4. State: React hooks manage local UI state</p>
             </CardContent>
           </Card>
         </section>

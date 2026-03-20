@@ -1,23 +1,49 @@
-import { initialTransactions } from "../data/mockData";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../lib/firebase";
 import { Transaction } from "../types/finance";
-import { loadFromStorage, saveToStorage } from "../utils/storage";
 
-const STORAGE_KEY = "smart-finance-transactions";
+function transactionsCollection(userId: string) {
+  return collection(db, "users", userId, "transactions");
+}
 
 export const transactionService = {
-  getTransactions(): Transaction[] {
-    return loadFromStorage<Transaction[]>(STORAGE_KEY, initialTransactions);
+  async getTransactions(userId: string): Promise<Transaction[]> {
+    const q = query(transactionsCollection(userId), orderBy("date", "desc"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((item) => ({
+      id: Number(item.id),
+      ...item.data(),
+    })) as Transaction[];
   },
 
-  saveTransactions(transactions: Transaction[]): void {
-    saveToStorage(STORAGE_KEY, transactions);
-  },
-
-  createTransaction(input: Omit<Transaction, "id" | "date">): Transaction {
-    return {
-      id: Date.now(),
-      date: new Date().toISOString().slice(0, 10),
+  async createTransaction(
+    userId: string,
+    input: Omit<Transaction, "id" | "date">
+  ): Promise<void> {
+    await addDoc(transactionsCollection(userId), {
       ...input,
-    };
+      date: new Date().toISOString().slice(0, 10),
+    });
+  },
+
+  async updateTransaction(
+    userId: string,
+    transactionId: string,
+    updates: Partial<Omit<Transaction, "id" | "date">>
+  ): Promise<void> {
+    await updateDoc(doc(db, "users", userId, "transactions", transactionId), updates);
+  },
+
+  async deleteTransaction(userId: string, transactionId: string): Promise<void> {
+    await deleteDoc(doc(db, "users", userId, "transactions", transactionId));
   },
 };

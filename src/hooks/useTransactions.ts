@@ -8,12 +8,29 @@ interface AddTransactionInput {
   category: TransactionCategory;
 }
 
-export function useTransactions(search: string) {
-  const [transactions, setTransactions] = useState<Transaction[]>(() => transactionService.getTransactions());
+export function useTransactions(userId?: string) {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    transactionService.saveTransactions(transactions);
-  }, [transactions]);
+    async function loadTransactions() {
+      if (!userId) return;
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await transactionService.getTransactions(userId);
+        setTransactions(data);
+      } catch {
+        setError("Unable to load transactions right now.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadTransactions();
+  }, [userId]);
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((transaction) =>
@@ -32,26 +49,34 @@ export function useTransactions(search: string) {
     };
   }, [transactions]);
 
-  function addTransaction(input: AddTransactionInput): boolean {
+  async function addTransaction(input: AddTransactionInput) {
+    if (!userId) return false;
     const parsedAmount = Number(input.amount);
-    if (!input.merchant || Number.isNaN(parsedAmount) || parsedAmount === 0) {
+    if (!input.merchant || Number.isNaN(parsedAmount) || parsedAmount === 0) return false;
+
+    try {
+      await transactionService.createTransaction(userId, {
+        merchant: input.merchant,
+        amount: parsedAmount,
+        category: input.category,
+      });
+
+      const refreshed = await transactionService.getTransactions(userId);
+      setTransactions(refreshed);
+      return true;
+    } catch {
+      setError("Unable to save transaction.");
       return false;
     }
-
-    const newTransaction = transactionService.createTransaction({
-      merchant: input.merchant,
-      amount: parsedAmount,
-      category: input.category,
-    });
-
-    setTransactions((prev) => [newTransaction, ...prev]);
-    return true;
   }
 
   return {
-    transactions,
+    search,
+    setSearch,
     filteredTransactions,
     totals,
     addTransaction,
+    isLoading,
+    error,
   };
 }
