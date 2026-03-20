@@ -28,8 +28,16 @@ This project simulates a real-world digital banking experience, focusing on usab
 * Vite (Build Tool)
 
 ---
+## Architecture
 
-## 🧠 What I Learned
+The project is organized with a modular structure to separate UI, state, and data logic:
+
+- components: reusable UI building blocks
+- hooks: stateful logic for transactions and app behavior
+- services: data handling and persistence logic
+- utils: formatting and helper functions
+
+This structure makes the app easier to scale and prepares it for future backend integration with Firebase.## 🧠 What I Learned
 
 * Structuring applications using modular architecture
 * Managing and transforming financial data
@@ -39,7 +47,7 @@ This project simulates a real-world digital banking experience, focusing on usab
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Improvements
 
 * Add authentication (Firebase/Auth)
 * Connect to real backend API
