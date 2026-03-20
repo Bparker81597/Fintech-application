@@ -9,7 +9,7 @@ interface AddTransactionCardProps {
     merchant: string;
     amount: string;
     category: TransactionCategory;
-  }) => boolean;
+  }) => Promise<boolean>;
 }
 
 export function AddTransactionCard({ onAddTransaction }: AddTransactionCardProps) {
@@ -18,12 +18,15 @@ export function AddTransactionCard({ onAddTransaction }: AddTransactionCardProps
     amount: "",
     category: "General",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit() {
-    const success = onAddTransaction(form);
+  async function handleSubmit() {
+    setIsSubmitting(true);
+    const success = await onAddTransaction(form);
     if (success) {
       setForm({ merchant: "", amount: "", category: "General" });
     }
+    setIsSubmitting(false);
   }
 
   return (
@@ -59,7 +62,9 @@ export function AddTransactionCard({ onAddTransaction }: AddTransactionCardProps
           <option>Subscriptions</option>
           <option>Dining</option>
         </select>
-        <Button onClick={handleSubmit} className="w-full rounded-2xl">Add Transaction</Button>
+        <Button onClick={handleSubmit} className="w-full rounded-2xl" disabled={isSubmitting}>
+          {isSubmitting ? "Adding..." : "Add Transaction"}
+        </Button>
         <p className="text-xs text-slate-500 leading-5">
           Swap the service implementation later with Firebase or your API.
         </p>
