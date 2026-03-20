@@ -1,6 +1,8 @@
+import { LogOut } from "lucide-react";
 import { ArrowDownRight, ArrowUpRight, PiggyBank, TrendingUp, Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
 import { DashboardStat } from "../components/dashboard/DashboardStat";
 import { SpendingChartCard } from "../components/dashboard/SpendingChartCard";
@@ -10,13 +12,15 @@ import { BudgetProgressCard } from "../components/budgets/BudgetProgressCard";
 import { InsightsGrid } from "../components/insights/InsightsGrid";
 import { useTransactions } from "../hooks/useTransactions";
 import { formatCurrency } from "../utils/currency";
+import { authService } from "../services/authService";
 
 interface DashboardPageProps {
   userId: string;
+  onSignOut: () => void;
 }
 
-export default function DashboardPage({ userId }: DashboardPageProps) {
-  const { search, setSearch, filteredTransactions, totals, addTransaction, isLoading, error } = useTransactions(userId);
+export default function DashboardPage({ userId, onSignOut }: DashboardPageProps) {
+  const { search, setSearch, filteredTransactions, totals, addTransaction, deleteTransaction, isLoading, error } = useTransactions(userId);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -45,7 +49,7 @@ export default function DashboardPage({ userId }: DashboardPageProps) {
           </TabsList>
 
           <TabsContent value="transactions">
-            {isLoading ? <p className="text-sm text-slate-500">Loading transactions...</p> : <TransactionsList transactions={filteredTransactions} />}
+            {isLoading ? <p className="text-sm text-slate-500">Loading transactions...</p> : <TransactionsList transactions={filteredTransactions} onDeleteTransaction={deleteTransaction} />}
           </TabsContent>
 
           <TabsContent value="budgets">
@@ -77,13 +81,20 @@ export default function DashboardPage({ userId }: DashboardPageProps) {
               <CardDescription>Firebase integration details.</CardDescription>
             </CardHeader>
             <CardContent className="text-sm text-slate-600 space-y-3 leading-6">
-              <p>1. Auth: Email/Password authentication with Firebase Auth</p>
+              <p>1. Auth: Email/Password and Google authentication with Firebase Auth</p>
               <p>2. Firestore: users/{'{userId}'}/transactions subcollection</p>
               <p>3. Security: User data isolated by UID</p>
               <p>4. State: React hooks manage local UI state</p>
             </CardContent>
           </Card>
         </section>
+
+        <div className="flex justify-center mt-8">
+          <Button onClick={onSignOut} variant="outline" className="rounded-2xl">
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
       </div>
     </div>
   );

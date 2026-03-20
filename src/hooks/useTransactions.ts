@@ -70,12 +70,26 @@ export function useTransactions(userId?: string) {
     }
   }
 
+  async function deleteTransaction(transactionId: string) {
+    if (!userId) return false;
+    try {
+      await transactionService.deleteTransaction(userId, transactionId);
+      const refreshed = await transactionService.getTransactions(userId);
+      setTransactions(refreshed);
+      return true;
+    } catch {
+      setError("Unable to delete transaction.");
+      return false;
+    }
+  }
+
   return {
     search,
     setSearch,
     filteredTransactions,
     totals,
     addTransaction,
+    deleteTransaction,
     isLoading,
     error,
   };

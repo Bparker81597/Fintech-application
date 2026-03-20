@@ -1,9 +1,14 @@
 import DashboardPage from "./pages/DashboardPage";
 import { AuthCard } from "./components/auth/AuthCard";
 import { useAuth } from "./hooks/useAuth";
+import { authService } from "./services/authService";
 
 export default function App() {
   const { user, isAuthLoading } = useAuth();
+
+  async function handleSignOut() {
+    await authService.signOut();
+  }
 
   if (isAuthLoading) {
     return (
@@ -17,5 +22,5 @@ export default function App() {
     return <AuthCard />;
   }
 
-  return <DashboardPage userId={user.uid} />;
+  return <DashboardPage userId={user.uid} onSignOut={handleSignOut} />;
 }

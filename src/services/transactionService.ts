@@ -20,19 +20,20 @@ export const transactionService = {
     const q = query(transactionsCollection(userId), orderBy("date", "desc"));
     const snapshot = await getDocs(q);
     return snapshot.docs.map((item) => ({
-      id: Number(item.id),
-      ...item.data(),
+      id: item.id,
+      ...(item.data() as Omit<Transaction, "id">),
     })) as Transaction[];
   },
 
   async createTransaction(
     userId: string,
     input: Omit<Transaction, "id" | "date">
-  ): Promise<void> {
-    await addDoc(transactionsCollection(userId), {
+  ): Promise<string> {
+    const docRef = await addDoc(transactionsCollection(userId), {
       ...input,
       date: new Date().toISOString().slice(0, 10),
     });
+    return docRef.id;
   },
 
   async updateTransaction(

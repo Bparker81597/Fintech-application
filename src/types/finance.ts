@@ -9,7 +9,7 @@ export type TransactionCategory =
   | "General";
 
 export interface Transaction {
-  id: number;
+  id: string;
   merchant: string;
   amount: number;
   category: TransactionCategory;
