@@ -37,7 +37,11 @@ The project is organized with a modular structure to separate UI, state, and dat
 - services: data handling and persistence logic
 - utils: formatting and helper functions
 
-This structure makes the app easier to scale and prepares it for future backend integration with Firebase.## 🧠 What I Learned
+This structure makes the app easier to scale and prepares it for future backend integration with Firebase.
+
+---
+
+## 🧠 What I Learned
 
 * Structuring applications using modular architecture
 * Managing and transforming financial data
