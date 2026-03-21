@@ -1,7 +1,6 @@
 import { LogOut } from "lucide-react";
-import { ArrowDownRight, ArrowUpRight, PiggyBank, TrendingUp, Wallet } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, PiggyBank, Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
 import { DashboardStat } from "../components/dashboard/DashboardStat";
@@ -60,34 +59,6 @@ export default function DashboardPage({ userId, onSignOut }: DashboardPageProps)
             <InsightsGrid />
           </TabsContent>
         </Tabs>
-
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-          <Card className="rounded-2xl border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5" /> Engineering Notes</CardTitle>
-              <CardDescription>Use these points when explaining the project.</CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-slate-600 space-y-3 leading-6">
-              <p>• Firebase Authentication protects access to the dashboard.</p>
-              <p>• Firestore stores transactions by user in a secure collection.</p>
-              <p>• Service and hook layers separate data logic from presentation.</p>
-              <p>• The app now reflects a realistic production architecture.</p>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Backend Architecture</CardTitle>
-              <CardDescription>Firebase integration details.</CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-slate-600 space-y-3 leading-6">
-              <p>1. Auth: Email/Password and Google authentication with Firebase Auth</p>
-              <p>2. Firestore: users/{'{userId}'}/transactions subcollection</p>
-              <p>3. Security: User data isolated by UID</p>
-              <p>4. State: React hooks manage local UI state</p>
-            </CardContent>
-          </Card>
-        </section>
 
         <div className="flex justify-center mt-8">
           <Button onClick={onSignOut} variant="outline" className="rounded-2xl">
