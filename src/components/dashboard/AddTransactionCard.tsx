@@ -18,22 +18,23 @@ export function AddTransactionCard({ onAddTransaction }: AddTransactionCardProps
     amount: "",
     category: "General",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit() {
-    setIsSubmitting(true);
+    const parsedAmount = Number(form.amount);
+    if (!form.merchant || Number.isNaN(parsedAmount) || parsedAmount === 0) return;
+    
+    // Optimistic - reset immediately, Firebase saves in background
     const success = await onAddTransaction(form);
     if (success) {
       setForm({ merchant: "", amount: "", category: "General" });
     }
-    setIsSubmitting(false);
   }
 
   return (
     <Card className="rounded-2xl shadow-sm border-slate-200">
       <CardHeader>
         <CardTitle>Add Transaction</CardTitle>
-        <CardDescription>Uses a service layer and local persistence.</CardDescription>
+        <CardDescription>Quick add with instant UI update.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         <Input
@@ -62,11 +63,11 @@ export function AddTransactionCard({ onAddTransaction }: AddTransactionCardProps
           <option>Subscriptions</option>
           <option>Dining</option>
         </select>
-        <Button onClick={handleSubmit} className="w-full rounded-2xl" disabled={isSubmitting}>
-          {isSubmitting ? "Adding..." : "Add Transaction"}
+        <Button onClick={handleSubmit} className="w-full rounded-2xl">
+          Add Transaction
         </Button>
         <p className="text-xs text-slate-500 leading-5">
-          Swap the service implementation later with Firebase or your API.
+          Transaction appears instantly, saves to Firebase in background.
         </p>
       </CardContent>
     </Card>
