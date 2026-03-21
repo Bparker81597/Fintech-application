@@ -1,3 +1,4 @@
+// SmartFinance Dashboard v1.1 - Performance optimized
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
