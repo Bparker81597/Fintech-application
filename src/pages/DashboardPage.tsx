@@ -52,11 +52,11 @@ export default function DashboardPage({ userId, onSignOut }: DashboardPageProps)
           </TabsContent>
 
           <TabsContent value="budgets">
-            <BudgetProgressCard />
+            <BudgetProgressCard transactions={filteredTransactions} />
           </TabsContent>
 
           <TabsContent value="insights">
-            <InsightsGrid />
+            <InsightsGrid transactions={filteredTransactions} />
           </TabsContent>
         </Tabs>
 
